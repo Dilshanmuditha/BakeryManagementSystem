@@ -107,6 +107,7 @@
             this.lblAddress.Size = new System.Drawing.Size(175, 25);
             this.lblAddress.TabIndex = 3;
             this.lblAddress.Text = "Customer Address";
+            this.lblAddress.Click += new System.EventHandler(this.lblAddress_Click);
             // 
             // btnCancel
             // 
@@ -117,6 +118,7 @@
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // lblPno
             // 
@@ -127,6 +129,7 @@
             this.lblPno.Size = new System.Drawing.Size(144, 25);
             this.lblPno.TabIndex = 2;
             this.lblPno.Text = "Mobile Number";
+            this.lblPno.Click += new System.EventHandler(this.lblPno_Click);
             // 
             // btnDelete
             // 
@@ -148,6 +151,7 @@
             this.lblName.Size = new System.Drawing.Size(154, 25);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Customer Name";
+            this.lblName.Click += new System.EventHandler(this.lblName_Click);
             // 
             // btnUpdate
             // 
@@ -169,6 +173,7 @@
             this.lblId.Size = new System.Drawing.Size(121, 25);
             this.lblId.TabIndex = 0;
             this.lblId.Text = "Customer ID";
+            this.lblId.Click += new System.EventHandler(this.lblId_Click);
             // 
             // btnAdd
             // 
@@ -189,6 +194,7 @@
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(388, 88);
             this.txtAddress.TabIndex = 3;
+            this.txtAddress.TextChanged += new System.EventHandler(this.txtAddress_TextChanged);
             // 
             // txtPno
             // 
@@ -197,6 +203,7 @@
             this.txtPno.Name = "txtPno";
             this.txtPno.Size = new System.Drawing.Size(324, 30);
             this.txtPno.TabIndex = 2;
+            this.txtPno.TextChanged += new System.EventHandler(this.txtPno_TextChanged);
             // 
             // txtName
             // 
@@ -205,6 +212,7 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(324, 30);
             this.txtName.TabIndex = 1;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // cmbId
             // 

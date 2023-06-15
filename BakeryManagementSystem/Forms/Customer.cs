@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -103,7 +104,7 @@ namespace BakeryManagementSystem
         private void cmbId_SelectedIndexChanged(object sender, EventArgs e)
         {
             string no = cmbId.Text;
-
+            
             if (no != "New Register")
             {
                 conn.Open();
@@ -115,13 +116,20 @@ namespace BakeryManagementSystem
                     txtName.Text = row[1].ToString();
                     txtAddress.Text = row[2].ToString();
                     txtPno.Text = row[3].ToString();
+
                     
+
+
+
                 }
                 conn.Close();
 
                 btnAdd.Enabled = false;
                 btnUpdate.Enabled = true;
                 btnDelete.Enabled = true;
+
+                int customerIdInt = int.Parse(no);
+                GetOrderHistory(customerIdInt);
             }
             else
             {
@@ -140,10 +148,10 @@ namespace BakeryManagementSystem
         {
             DateTime startDate = dtpStart.Value;
             DateTime endDate = dtpEnd.Value;
+            int customerId = int.Parse((string)cmbId.Text);
 
-            DataTable orders = ordersFilter.GetOrdersByDateRange(startDate, endDate);
+            ShowOrderHistoryByDate(customerId,startDate,endDate);
 
-            dataGridView1.DataSource = orders;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -203,6 +211,93 @@ namespace BakeryManagementSystem
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void GetOrderHistory(int customerId)
+        {
+            SqlConnection conn = new SqlConnection(@"Data Source=DILSHAN-ROG\MSSQLSERVER01;Initial Catalog=BakeryManagementSystem;User ID=root1;Password=1234");
+
+            {
+                conn.Open();
+
+
+                    string query = "OrderHistoryView WHERE CustomerId = @customerId";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@customerId", customerId);
+
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        dataGridView1.DataSource = dataTable;
+                    }
+
+                conn.Close();
+            }
+        }
+        private void ShowOrderHistoryByDate(int customerId, DateTime startDate, DateTime endDate)
+        {
+            using (SqlConnection conn = new SqlConnection(@"Data Source=DILSHAN-ROG\MSSQLSERVER01;Initial Catalog=BakeryManagementSystem;User ID=root1;Password=1234"))
+            {
+                conn.Open();
+
+                string query = "SELECT * FROM dbo.GetOrderHistoryByCustomerAndDate(@customerId, @startDate, @endDate)";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@customerId", customerId);
+                    cmd.Parameters.AddWithValue("@startDate", startDate);
+                    cmd.Parameters.AddWithValue("@endDate", endDate);
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    dataGridView1.DataSource = dataTable;
+                }
+
+                conn.Close();
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblPno_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblId_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblAddress_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtAddress_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPno_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
         {
 
         }

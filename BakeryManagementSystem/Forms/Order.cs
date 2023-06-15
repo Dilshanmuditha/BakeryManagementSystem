@@ -197,13 +197,38 @@ namespace BakeryManagementSystem.Forms
             string query = "select * from Product where Name = '" + no + "'";
             SqlCommand cmd = new SqlCommand(query, conn);
             SqlDataReader row = cmd.ExecuteReader();
+
             while (row.Read())
             {
+                String itemName = (String)row["Name"];
                 txtPrice.Text = row[2].ToString();
-
+                int availableQuantity = GetAvailableQuantity(itemName);
+                label2.Text = availableQuantity.ToString();
             }
+
+
+
             conn.Close();
 
+        }
+
+       
+        public int GetAvailableQuantity(String itemName)
+        {
+            int availableQuantity = 0;
+
+            SqlConnection connection = new SqlConnection(@"Data Source=DILSHAN-ROG\MSSQLSERVER01;Initial Catalog=BakeryManagementSystem;User ID=root1;Password=1234");
+            {
+             connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT dbo.GetAvailableQuantity(@itemName)", connection))
+                {
+                    command.Parameters.AddWithValue("@itemName", itemName);
+                    availableQuantity = Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
+
+            return availableQuantity;
         }
     }
 }
