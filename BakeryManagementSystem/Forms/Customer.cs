@@ -108,7 +108,7 @@ namespace BakeryManagementSystem
             if (no != "New Register")
             {
                 conn.Open();
-                string query = "select * from CustomerDetails where Id = '" + no + "'";
+                string query = "SELECT * FROM vw_CustomerDetails WHERE Id = '" + no + "'";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader row = cmd.ExecuteReader();
                 while (row.Read())
@@ -116,10 +116,6 @@ namespace BakeryManagementSystem
                     txtName.Text = row[1].ToString();
                     txtAddress.Text = row[2].ToString();
                     txtPno.Text = row[3].ToString();
-
-                    
-
-
 
                 }
                 conn.Close();
@@ -223,7 +219,7 @@ namespace BakeryManagementSystem
                 conn.Open();
 
 
-                    string query = "OrderHistoryView WHERE CustomerId = @customerId";
+                    string query = "SELECT * FROM OrderHistoryView WHERE CustomerId = @customerId";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@customerId", customerId);
@@ -298,6 +294,16 @@ namespace BakeryManagementSystem
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpEnd_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpStart_ValueChanged(object sender, EventArgs e)
         {
 
         }

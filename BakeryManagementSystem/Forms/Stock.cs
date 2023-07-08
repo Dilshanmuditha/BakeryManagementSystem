@@ -94,36 +94,32 @@ namespace BakeryManagementSystem.Forms
         private void btnAdd_Click(object sender, EventArgs e)
         {
 
-            SqlConnection conn = new SqlConnection(@"Data Source=DILSHAN-ROG\MSSQLSERVER01;Initial Catalog=BakeryManagementSystem;User ID=root1;Password=1234");
-
-            string name = comboBox1.SelectedItem.ToString();
-            decimal price = decimal.Parse(textBox1.Text);
-            decimal quantity = numericUpDown1.Value;
-            decimal total = decimal.Parse(textBox3.Text);
-
-            string query = "INSERT INTO Stock values('" + name + "','" + price + "','" + quantity + "','" + total + "')";
-            SqlCommand cmd = new SqlCommand(query, conn);
-            try
+            using (SqlConnection conn = new SqlConnection(@"Data Source=DILSHAN-ROG\MSSQLSERVER01;Initial Catalog=BakeryManagementSystem;User ID=root1;Password=1234"))
             {
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Record added Successfully!", "Stock Added...!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            }
-            catch (SqlException ex)
-            {
-                string msg = "Insert Error";
-                msg += ex.Message;
-            }
-            finally
-            {
-                if (conn.State == ConnectionState.Open)
+                using (SqlCommand cmd = new SqlCommand("InsertStock", conn))
                 {
-                    conn.Close();
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters and their values
+                    cmd.Parameters.AddWithValue("@Name", comboBox1.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@Price", decimal.Parse(textBox1.Text));
+                    cmd.Parameters.AddWithValue("@Quantity", numericUpDown1.Value);
+                    cmd.Parameters.AddWithValue("@Total", decimal.Parse(textBox3.Text));
+
+                    try
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Record added Successfully!", "Stock Added...!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (SqlException ex)
+                    {
+                        string msg = "Error: ";
+                        msg += ex.Message;
+                        MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
-
-            
 
         }
 

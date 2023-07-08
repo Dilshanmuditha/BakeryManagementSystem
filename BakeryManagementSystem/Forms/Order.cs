@@ -73,7 +73,7 @@ namespace BakeryManagementSystem.Forms
                 SqlCommand itemCommand = new SqlCommand(itemQuery, connection);
                 itemCommand.Parameters.AddWithValue("@ItemName", itemName);
                 itemID = (int)itemCommand.ExecuteScalar();
-            }
+             }
 
             // Create an Order object and add it to the list
             OrderItem order = new OrderItem
@@ -94,12 +94,12 @@ namespace BakeryManagementSystem.Forms
             int customerID = OrderItem.CustomerID;
 
             decimal totalPrice = CalculateTotalOrderPrice(customerID);
-
+            SqlConnection connection = new SqlConnection(@"Data Source=DILSHAN-ROG\MSSQLSERVER01;Initial Catalog=BakeryManagementSystem;User ID=root1;Password=1234");
+            connection.Open();
             foreach (OrderItem order in orders)
             {
                 
-                SqlConnection connection = new SqlConnection(@"Data Source=DILSHAN-ROG\MSSQLSERVER01;Initial Catalog=BakeryManagementSystem;User ID=root1;Password=1234");
-
+                
 
                 {
                     string query = "INSERT INTO Orders (CustomerID,TotalAmount, ItemID, Quantity) VALUES (@CustomerID,@TotalAmount, @ItemID, @Quantity)";
@@ -109,13 +109,13 @@ namespace BakeryManagementSystem.Forms
                     command.Parameters.AddWithValue("@Quantity", order.Quantity);
                     command.Parameters.AddWithValue("@TotalAmount", totalPrice);
 
-                    connection.Open();
                     command.ExecuteNonQuery();
 
 
                 }
 
             }
+            connection.Close();
 
             MessageBox.Show("Record added Successfully!", "Order Added...!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             orders.Clear();
@@ -229,6 +229,11 @@ namespace BakeryManagementSystem.Forms
             }
 
             return availableQuantity;
+        }
+
+        private void cmbCName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
